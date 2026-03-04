@@ -19,15 +19,16 @@ type Server struct {
 
 var cfg *Config
 
-func Init(path string) {
-	data, err := os.ReadFile(path)
+func Init() {
+
+	data, err := os.ReadFile(getPath())
 	if err != nil {
 
 		fmt.Println(err)
 
 	}
 
-	c := &Config{} // allocate a real struct
+	c := &Config{}
 	if err := yaml.Unmarshal(data, c); err != nil {
 
 		return
@@ -43,14 +44,40 @@ func Get() *Config {
 	return cfg
 }
 
+func Save() {
+	bytes, _ := yaml.Marshal(cfg)
+
+	os.WriteFile(getPath(), bytes, 0644)
+}
+
+func Add(name string, host string, user string) error {
+
+	if GetServer(name) != nil {
+		return fmt.Errorf("server %s already exists", name)
+	}
+
+	cfg.Servers = append(cfg.Servers, Server{name, host, user})
+
+	return nil
+}
+
 func GetServer(name string) *Server {
 
-	for _, s := range cfg.Servers {
-		if s.Name == name {
-			return &s
+	for i := range cfg.Servers {
+		if cfg.Servers[i].Name == name {
+			return &cfg.Servers[i]
 		}
 	}
 
 	return nil
 
+}
+
+func getPath() string {
+	home, _ := os.UserHomeDir()
+
+	return fmt.Sprintf(
+		"%s/.sshboy/inventory.yaml",
+		home,
+	)
 }

@@ -9,15 +9,14 @@ import (
 )
 
 func init() {
-	rootCmd.AddCommand(versionCmd)
+	rootCmd.AddCommand(listCommand)
 }
 
-var versionCmd = &cobra.Command{
+var listCommand = &cobra.Command{
 	Use:   "list",
 	Short: "Print all the available servers",
 	Run: func(cmd *cobra.Command, args []string) {
 		prettyPrint(config.Get())
-		fmt.Println("Hugo Static Site Generator v0.9 -- HEAD")
 	},
 }
 

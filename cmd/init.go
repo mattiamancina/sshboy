@@ -26,7 +26,7 @@ var initCommand = &cobra.Command{
 		}
 		_, err = os.Create(fmt.Sprintf("%s/.sshboy/inventory.yaml", home))
 		if err != nil {
-			fmt.Println("An error occured while writing ~/.sshboy/inventory.yaml", err)
+			fmt.Println("An error occurred while writing ~/.sshboy/inventory.yaml", err)
 			os.Exit(1)
 		}
 	},

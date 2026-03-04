@@ -9,7 +9,6 @@ import (
 )
 
 var (
-	cfgFile string
 	rootCmd = &cobra.Command{
 
 		Use:   "sshboy",
@@ -29,11 +28,6 @@ func Execute() {
 
 func init() {
 
-	home, _ := os.UserHomeDir()
-
-	config.Init(fmt.Sprintf(
-		"%s/.sshboy/inventory.yaml",
-		home,
-	))
+	config.Init()
 
 }
